@@ -33,18 +33,31 @@ class Example(QWidget):
         btn.resize(btn.sizeHint())
         btn.move(x, y)
 
-    def initUI(self) -> None:
-
-        self.resize(1000, 700)
-        self.center()
-
+    def Set_Widgets(self) -> None:
+        """Метод установки всех виджетов на форму"""
         self.Set_Label(180, 50, 'Хороший отзыв')
         self.Set_Label(700, 50, 'Плохой отзыв')
 
-        self.Set_LineEdit(50, 100)
-        self.Set_LineEdit(550, 100)
+        self.Set_LineEdit(50, 90)
+        self.Set_LineEdit(550, 90)
 
-       # self.Set_Button()
+        self.Set_Button(
+            100, 610, 'Посмотреть следующий хороший отзыв')
+        self.Set_Button(
+            610, 610, 'Посмотреть следующий плохой отзыв')
+
+        self.Set_Button(
+            1000, 90, 'Создать аннотацию для dataset')
+        self.Set_Button(
+            1000, 140, 'Создать новый dataset и аннотацию для него')
+        self.Set_Button(
+            1000, 190, 'Создать рандомный dataset и аннотацию для него')
+
+    def initUI(self) -> None:
+
+        self.resize(1400, 700)
+        self.center()
+        self.Set_Widgets()
 
         self.setWindowTitle('Отзывы')
         self.setWindowIcon(QIcon('web.png'))
