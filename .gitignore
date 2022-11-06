@@ -1,6 +1,9 @@
 dataset/
 dataset_new/
 dataset_new_random/
+dataset.csv
+dataset_new.csv
+dataset_new_random.csv
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

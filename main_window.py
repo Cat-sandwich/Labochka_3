@@ -3,12 +3,18 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QFont
 
+import csv_file
+import copy_dataset
+import copy_dataset_random_number
+import return_path
+
 
 class Example(QWidget):
 
     def __init__(self):
         super().__init__()
-
+        self.current = 0
+        self.path_dataset = ""
         self.initUI()
 
     def Set_Label(self, x: int, y: int, text: str) -> None:
@@ -18,40 +24,71 @@ class Example(QWidget):
         reviews.resize(reviews.sizeHint())
         reviews.move(x, y)
 
-    def Set_LineEdit(self, x: int, y: int) -> None:
+    def Set_LineEdit(self, x: int, y: int) -> QLineEdit:
         """Этот метод устанавливает LineEdit на форму по заданным координатам"""
 
         reviews_edit = QLineEdit(' ', self)
         reviews_edit.resize(400, 500)
         reviews_edit.setReadOnly(True)
         reviews_edit.move(x, y)
+        return reviews_edit
 
-    def Set_Button(self, x: int, y: int, text: str) -> None:
+    def Set_Button(self, x: int, y: int, text: str, function) -> None:
         """Этот метод устанавливает PushButton на форму по заданным координатам"""
 
         btn = QPushButton(text, self)
         btn.resize(btn.sizeHint())
         btn.move(x, y)
+        btn.clicked.connect(function)
+        return btn
 
     def Set_Widgets(self) -> None:
         """Метод установки всех виджетов на форму"""
         self.Set_Label(180, 50, 'Хороший отзыв')
         self.Set_Label(700, 50, 'Плохой отзыв')
 
-        self.Set_LineEdit(50, 90)
-        self.Set_LineEdit(550, 90)
+        self.Line_Edit_Good = self.Set_LineEdit(50, 90)
+        self.Line_Edit_Bad = self.Set_LineEdit(550, 90)
 
         self.Set_Button(
-            100, 610, 'Посмотреть следующий хороший отзыв')
-        self.Set_Button(
-            610, 610, 'Посмотреть следующий плохой отзыв')
+            100, 610, 'Посмотреть следующий хороший отзыв', self.On_Next_Good_Review_Button)
 
         self.Set_Button(
-            1000, 90, 'Создать аннотацию для dataset')
+            610, 610, 'Посмотреть следующий плохой отзыв', self.On_Next_Bad_Review_Button)
+
         self.Set_Button(
-            1000, 140, 'Создать новый dataset и аннотацию для него')
+            1000, 90, 'Создать аннотацию для dataset', self.On_Create_Csv_Dataset_Button)
         self.Set_Button(
-            1000, 190, 'Создать рандомный dataset и аннотацию для него')
+            1000, 140, 'Создать новый dataset и аннотацию для него', self.On_Create_Copy_Dataset_Button)
+        self.Set_Button(
+            1000, 190, 'Создать рандомный dataset и аннотацию для него', self.On_Create_Dataset_Random_Button)
+
+    def On_Next_Good_Review_Button(self) -> None:
+        """Метод для отображения следующего хорошего отзыва"""
+        if self.path_dataset != "":
+            return_path.get_path(self.path_dataset, 'good', self.current)
+            self.current += 1
+
+    def On_Next_Bad_Review_Button(self) -> None:
+        """Метод для отображения следующего плохого отзыва"""
+        if self.path_dataset != "":
+            return_path.get_path(self.path_dataset, 'bad', self.current)
+            self.current += 1
+            self.Line_Edit_Bad.setText()
+
+    def On_Create_Csv_Dataset_Button(self) -> None:
+        """Метод для создания csv-файла для датасета"""
+        while self.path_dataset == "":
+            self.path_dataset = QFileDialog.getExistingDirectory(
+                self, 'Выберите папку для датасета')
+
+        csv_file.Create_csv(self.path_dataset)
+
+    def On_Create_Copy_Dataset_Button(self) -> None:
+        """Метод для создания нового датасета и его csv-файла"""
+
+    def On_Create_Dataset_Random_Button(self) -> None:
+        """Метод для создания рандомного датасета и его csv-файла"""
 
     def initUI(self) -> None:
 

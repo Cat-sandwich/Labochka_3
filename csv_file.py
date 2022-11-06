@@ -11,13 +11,11 @@ def add_to_csv(path_dataset: str, paths_txt: str) -> None:
 
         for i in range(1, len(paths_txt)):
             class_txt = str(paths_txt[i]).split('\\')
-            print(class_txt[1])
             writer.writerow([f'{ (path_dataset + str(paths_txt[i])).replace(" ","")}',
                             f'..\\dataset{(str(paths_txt[i])).replace(" ","")}', f'{class_txt[1]}'])
-            print(i)
 
 
-def find_path_txt(path_dataset: str) -> str:
+def find_path_txt(path_dataset: str) -> list:
     """поиск путей до файлов с отзывами"""
     paths_txt = list()
     class_list = ('\good', '\\bad')
@@ -28,20 +26,20 @@ def find_path_txt(path_dataset: str) -> str:
 
         for j in range(0, count):
             path_txt = folder_name + f'\\{(j): 05}' + '.txt'
-            #print(f'{folder_name}: {(j): 05}')
+
             paths_txt.append(path_txt)
 
     return paths_txt
 
 
-if __name__ == "__main__":
-    print('Hallo')
-    path_dataset = os.path.abspath('dataset')
-    print(path_dataset)
-
+def Create_csv(path_dataset: str) -> None:
+    """Вызов функций для поиска питей файлов и создания csv-файла"""
     paths_txt = find_path_txt(path_dataset)
-    print(paths_txt[1])
-
     add_to_csv(path_dataset, paths_txt)
 
+
+if __name__ == "__main__":
+
+    path_dataset = os.path.abspath('dataset')
+    print(path_dataset)
     print("Готово!")
