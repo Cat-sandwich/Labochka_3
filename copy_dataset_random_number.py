@@ -5,7 +5,7 @@ import shutil
 
 
 def add_to_csv_and_to_dataset_random_number(path_dataset: str, paths_txt: str) -> None:
-    """создание csv-файлв и копирование в dataset_random_number"""
+    """создание csv-файла и копирование в dataset_random_number"""
 
     name_folder = "dataset_random_number"
 
@@ -18,7 +18,7 @@ def add_to_csv_and_to_dataset_random_number(path_dataset: str, paths_txt: str) -
         writer = csv.writer(file, delimiter=';')
         writer.writerow(["Absolute path", "Relative path", "Class"])
 
-        for i in range(1, len(paths_txt)):
+        for i in range(0, len(paths_txt)):
             class_txt = str(paths_txt[i]).split('\\')
             new_name = str(random.randint(0, 10001)).zfill(5) + '.txt'
             while os.path.isfile(new_name):

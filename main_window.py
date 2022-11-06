@@ -13,7 +13,8 @@ class Example(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.current = 0
+        self.current_good = 0
+        self.current_bad = 0
         self.path_dataset = ""
         self.initUI()
 
@@ -24,10 +25,10 @@ class Example(QWidget):
         reviews.resize(reviews.sizeHint())
         reviews.move(x, y)
 
-    def Set_LineEdit(self, x: int, y: int) -> QLineEdit:
-        """Этот метод устанавливает LineEdit на форму по заданным координатам"""
+    def Set_LineEdit(self, x: int, y: int) -> QTextEdit:
+        """Этот метод устанавливает TextEdit на форму по заданным координатам"""
 
-        reviews_edit = QLineEdit(' ', self)
+        reviews_edit = QTextEdit(' ', self)
         reviews_edit.resize(400, 500)
         reviews_edit.setReadOnly(True)
         reviews_edit.move(x, y)
@@ -66,15 +67,20 @@ class Example(QWidget):
     def On_Next_Good_Review_Button(self) -> None:
         """Метод для отображения следующего хорошего отзыва"""
         if self.path_dataset != "":
-            return_path.get_path(self.path_dataset, 'good', self.current)
-            self.current += 1
+            path = return_path.get_path(
+                self.path_dataset + '.csv', 'good', self.current_good)
+            self.Line_Edit_Good.setText(
+                return_path.find_review_by_path(path))
+            self.current_good += 1
 
     def On_Next_Bad_Review_Button(self) -> None:
         """Метод для отображения следующего плохого отзыва"""
         if self.path_dataset != "":
-            return_path.get_path(self.path_dataset, 'bad', self.current)
-            self.current += 1
-            self.Line_Edit_Bad.setText()
+            path = return_path.get_path(
+                self.path_dataset + '.csv', 'bad', self.current_bad)
+            self.Line_Edit_Bad.setText(
+                return_path.find_review_by_path(path))
+            self.current_bad += 1
 
     def On_Create_Csv_Dataset_Button(self) -> None:
         """Метод для создания csv-файла для датасета"""

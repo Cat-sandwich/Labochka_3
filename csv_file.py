@@ -9,7 +9,7 @@ def add_to_csv(path_dataset: str, paths_txt: str) -> None:
         writer = csv.writer(file, delimiter=';')
         writer.writerow(["Absolute path", "Relative path", "Class"])
 
-        for i in range(1, len(paths_txt)):
+        for i in range(0, len(paths_txt)):
             class_txt = str(paths_txt[i]).split('\\')
             writer.writerow([f'{ (path_dataset + str(paths_txt[i])).replace(" ","")}',
                             f'..\\dataset{(str(paths_txt[i])).replace(" ","")}', f'{class_txt[1]}'])

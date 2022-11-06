@@ -11,7 +11,7 @@ def copy_dataset_to_new_dataset(path_dataset: str, path_txt_old: str, path_txt_n
     if not os.path.isdir(name_folder):
         os.mkdir(name_folder)
 
-    for i in range(1, len(path_txt_old)):
+    for i in range(0, len(path_txt_old)):
         shutil.copyfile(
             path_dataset + str(path_txt_old[i]), name_folder + str(path_txt_new[i]))
 
@@ -23,7 +23,7 @@ def add_to_csv(path_dataset: str, paths_txt: str) -> None:
         writer = csv.writer(file, delimiter=';')
         writer.writerow(["Absolute path", "Relative path", "Class"])
 
-        for i in range(1, len(paths_txt)):
+        for i in range(0, len(paths_txt)):
             class_txt = str(paths_txt[i]).split('\\')
             class_txt = str(class_txt[1]).split('_')
             print(class_txt[0])

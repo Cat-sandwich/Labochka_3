@@ -20,11 +20,17 @@ class Iterator:
         """возвращаем объект класса"""
         return self
 
+    def get_number_review(self) -> str:
+        number = re.split(";", str(self.list[self.counter]))
+        number = str(number[1]).split('\\')
+        number = str(number[6]).split('.')
+        return number[0]
+
     def __next__(self) -> str:
         """возврвщаем путь до файла"""
         if self.counter < len(self.list):
-            abs_way = re.split(";", str(self.list[self.counter]))
             self.counter += 1
+            abs_way = re.split(";", str(self.list[self.counter]))
             nc = self.name_class + "']"
             if abs_way[2] == nc:
                 return abs_way[0][2:]
