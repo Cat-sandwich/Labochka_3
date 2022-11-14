@@ -26,10 +26,8 @@ def add_to_csv(path_dataset: str, paths_txt: str) -> None:
         for i in range(0, len(paths_txt)):
             class_txt = str(paths_txt[i]).split('\\')
             class_txt = str(class_txt[1]).split('_')
-            print(class_txt[0])
             writer.writerow([f'{ (path_dataset + str(paths_txt[i])).replace(" ","")}',
                             f'..\\dataset{(str(paths_txt[i])).replace(" ","")}', f'{class_txt[0]}'])
-            print(i)
 
 
 def find_path_txt(path_dataset: str, delimiter: str) -> str:
@@ -43,10 +41,18 @@ def find_path_txt(path_dataset: str, delimiter: str) -> str:
 
         for j in range(0, count):
             path_txt = folder_name + delimiter + f'{(j): 05}' + '.txt'
-            #print(f'{folder_name}: {(j): 05}')
             paths_txt.append(path_txt.replace(" ", ""))
 
     return paths_txt
+
+
+def copy_dataset_add_csv(path_dataset: str) -> None:
+    """функция, выполняющая копирование в новый dataset и делающая csv-файл к нему"""
+    path_txt_old = find_path_txt(path_dataset, '\\')
+    path_txt_new = find_path_txt(path_dataset, '_')
+    copy_dataset_to_new_dataset(path_dataset, path_txt_old, path_txt_new)
+    add_to_csv(path_dataset, path_txt_new)
+    print('Работа завершена!')
 
 
 if __name__ == "__main__":

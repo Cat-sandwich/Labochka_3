@@ -1,12 +1,13 @@
 
 import sys
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtGui import QIcon
 
 import csv_file
 import copy_dataset
 import copy_dataset_random_number
 import return_path
+from multiprocessing import *
 
 
 class Example(QWidget):
@@ -92,9 +93,14 @@ class Example(QWidget):
 
     def On_Create_Copy_Dataset_Button(self) -> None:
         """Метод для создания нового датасета и его csv-файла"""
+        if self.path_dataset != "":
+            copy_dataset.copy_dataset_add_csv(self.path_dataset)
 
     def On_Create_Dataset_Random_Button(self) -> None:
         """Метод для создания рандомного датасета и его csv-файла"""
+        if self.path_dataset != "":
+            copy_dataset_random_number.copy_dataset_random_add_csv(
+                self.path_dataset)
 
     def initUI(self) -> None:
 
@@ -104,6 +110,7 @@ class Example(QWidget):
 
         self.setWindowTitle('Отзывы')
         self.setWindowIcon(QIcon('web.png'))
+        self.setStyleSheet("#MainWindow{border-image:url(background.jpg)}")
         self.show()
 
     def center(self) -> None:
@@ -118,4 +125,5 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     ex = Example()
+    ex.setStyleSheet("#MainWindow{border-image:url(background.jpg)}")
     sys.exit(app.exec_())

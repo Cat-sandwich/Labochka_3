@@ -46,6 +46,13 @@ def find_path_txt(path_dataset: str) -> None:
     return paths_txt
 
 
+def copy_dataset_random_add_csv(path_dataset: str) -> None:
+    """функция, выполняющая копирование файлов с рандомными номерами в новый dataset и делающая csv-файл к нему"""
+    paths_txt = find_path_txt(path_dataset)
+    add_to_csv_and_to_dataset_random_number(path_dataset, paths_txt)
+    print('Работа завершена!')
+
+
 if __name__ == "__main__":
 
     print('Hallo')
