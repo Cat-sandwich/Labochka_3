@@ -7,13 +7,37 @@ import csv_file
 import copy_dataset
 import copy_dataset_random_number
 import return_path
-from multiprocessing import *
+from PyQt5.QtCore import QThread, QObject
+import typing
+
+
+class CreateDataset(QThread):
+    def __init__(self, parent: typing.Optional[QObject]) -> None:
+        super().__init__(parent)
+
+    def run(self):
+        copy_dataset.copy_dataset_add_csv()
+
+        self.parent().msg.setText("Работа завершена!")
+        self.parent().msg.setWindowTitle("СООБЩЕНИЕ")
+        self.parent().msg.exec_()
+
+
+class CreateDatasetRandom(QThread):
+    def __init__(self, parent: typing.Optional[QObject]) -> None:
+        super().__init__(parent)
+
+    def run(self):
+        copy_dataset_random_number.copy_dataset_random_add_csv()
 
 
 class Example(QWidget):
 
     def __init__(self):
         super().__init__()
+
+        self.create_new_dataset = CreateDataset(self)
+        self.create_random_number_dataset = CreateDatasetRandom(self)
         self.current_good = 0
         self.current_bad = 0
         self.path_dataset = ""
@@ -94,24 +118,21 @@ class Example(QWidget):
     def On_Create_Copy_Dataset_Button(self) -> None:
         """Метод для создания нового датасета и его csv-файла"""
         if self.path_dataset != "":
-            copy_dataset.copy_dataset_add_csv(self.path_dataset)
+            self.create_new_dataset.start()
 
     def On_Create_Dataset_Random_Button(self) -> None:
         """Метод для создания рандомного датасета и его csv-файла"""
         if self.path_dataset != "":
-            copy_dataset_random_number.copy_dataset_random_add_csv(
-                self.path_dataset)
+            self.create_random_number_dataset.start()
 
     def initUI(self) -> None:
 
         self.resize(1400, 700)
         self.center()
         self.Set_Widgets()
-
+        self.msg = QMessageBox()
         self.setWindowTitle('Отзывы')
         self.setWindowIcon(QIcon('web.png'))
-        self.setStyleSheet("#MainWindow{border-image:url(background.jpg)}")
-        self.show()
 
     def center(self) -> None:
 
@@ -121,9 +142,15 @@ class Example(QWidget):
         self.move(qr.topLeft())
 
 
-if __name__ == '__main__':
-
+def Init_Application() -> None:
+    """создание оконного приложения"""
     app = QApplication(sys.argv)
     ex = Example()
-    ex.setStyleSheet("#MainWindow{border-image:url(background.jpg)}")
+    ex.setStyleSheet("background-image: url(background.jpg)")
+
+    ex.show()
     sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    Init_Application()

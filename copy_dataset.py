@@ -46,8 +46,9 @@ def find_path_txt(path_dataset: str, delimiter: str) -> str:
     return paths_txt
 
 
-def copy_dataset_add_csv(path_dataset: str) -> None:
+def copy_dataset_add_csv() -> None:
     """функция, выполняющая копирование в новый dataset и делающая csv-файл к нему"""
+    path_dataset = os.path.abspath('dataset')
     path_txt_old = find_path_txt(path_dataset, '\\')
     path_txt_new = find_path_txt(path_dataset, '_')
     copy_dataset_to_new_dataset(path_dataset, path_txt_old, path_txt_new)
